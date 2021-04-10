@@ -1,5 +1,5 @@
 import Foundation
-
+//morad
 extension Array where Element: NSAttributedString {
     func joined(separator: NSAttributedString? = nil) -> NSAttributedString {
         let result = NSMutableAttributedString()
