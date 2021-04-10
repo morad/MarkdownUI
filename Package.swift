@@ -25,7 +25,7 @@ let package = Package(
         .package(
             name: "AttributedText",
             url: "https://github.com/morad/AttributedText",
-            branch: "main"
+            from: "0.4.0"
         ),
         .package(
             name: "NetworkImage",
