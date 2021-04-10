@@ -23,6 +23,11 @@ let package = Package(
             from: "0.1.0"
         ),
         .package(
+            name: "AttributedText",
+            url: "https://github.com/morad/AttributedText",
+            from: "0.3.1"
+        ),
+        .package(
             name: "NetworkImage",
             url: "https://github.com/gonzalezreal/NetworkImage",
             from: "2.1.0"
