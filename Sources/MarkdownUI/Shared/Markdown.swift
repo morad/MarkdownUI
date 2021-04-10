@@ -47,21 +47,28 @@
         @Environment(\.markdownStyle) private var markdownStyle: MarkdownStyle
 
         private let document: Document
+        @Binding var testme: Bool
+        @Binding var testmeUrl: String
 
         /// Creates a Markdown view that displays a CommonMark document.
         /// - Parameter document: The CommonMark document to display.
-        public init(_ document: Document) {
+        public init(_ document: Document, _ testme: Binding<Bool>, _ testmeUrl: Binding<String>) {
             self.document = document
+            self._testme = testme
+            self._testmeUrl = testmeUrl
+            print("in testme", self.testme)
         }
 
         #if swift(>=5.4)
-            public init(@BlockBuilder content: () -> [Block]) {
-                self.init(Document(content: content))
+            public init(testme: Bool, testmeUrl: String, @BlockBuilder content: () -> [Block]) {
+                self.init(Document(content: content), testme: Bool, testmeUrl: String)
             }
         #endif
 
         public var body: some View {
             PrimitiveMarkdown(
+                testme: $testme,
+                testmeUrl: $testmeUrl,
                 document: document,
                 baseURL: markdownBaseURL,
                 writingDirection: NSWritingDirection(layoutDirection: layoutDirection),
@@ -77,14 +84,21 @@
     @available(macOS 11.0, iOS 14.0, tvOS 14.0, *)
     private struct PrimitiveMarkdown: View {
         @ObservedObject private var renderer: MarkdownRenderer
+        @Binding var testme: Bool
+        @Binding var testmeUrl: String
 
         init(
+            testme: Binding<Bool>,
+            testmeUrl: Binding<String>,
             document: Document,
             baseURL: URL?,
             writingDirection: NSWritingDirection,
             alignment: NSTextAlignment,
             style: MarkdownStyle
         ) {
+            self._testme = testme
+            self._testmeUrl = testmeUrl
+
             renderer = MarkdownRenderer(
                 document: document,
                 baseURL: baseURL,
@@ -95,7 +109,7 @@
         }
 
         var body: some View {
-            AttributedText(renderer.attributedString)
+            AttributedText(renderer.attributedString, $testme, $testmeUrl)
         }
     }
 
